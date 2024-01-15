@@ -2,8 +2,11 @@ package com.local.sdp.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name = "Faculty")
+@Table(name = "faculty")
 public class Faculty {
 
     @Id
@@ -20,6 +23,15 @@ public class Faculty {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id")
     private User user;
+
+
+    @ManyToMany(mappedBy = "facultyTechnologySet",cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    Set<Technologies> technologiesSet = new HashSet<>();
+
+
+    @ManyToMany(mappedBy = "facultyDomainSet",cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    Set<Domain> domainSet = new HashSet<>();
+
     public Faculty() {
     }
 
@@ -27,6 +39,23 @@ public class Faculty {
         this.name = name;
         this.experience = experience;
         this.phone = phone;
+    }
+
+
+    public Set<Technologies> getTechnologiesSet() {
+        return technologiesSet;
+    }
+
+    public void setTechnologiesSet(Set<Technologies> technologiesSet) {
+        this.technologiesSet = technologiesSet;
+    }
+
+    public Set<Domain> getDomainSet() {
+        return domainSet;
+    }
+
+    public void setDomainSet(Set<Domain> domainSet) {
+        this.domainSet = domainSet;
     }
 
     public int getId() {
@@ -77,6 +106,10 @@ public class Faculty {
                 ", experience=" + experience +
                 ", phone='" + phone + '\'' +
                 ", user=" + user +
+                ", technologiesSet=" + technologiesSet +
+                ", domainSet=" + domainSet +
                 '}';
     }
+
+
 }
