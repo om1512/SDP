@@ -19,7 +19,7 @@ public class Domain {
 
     @JsonIgnore
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "domain_faculty", joinColumns = @JoinColumn(name = "faculty_id"), inverseJoinColumns = @JoinColumn(name = "domain_id"))
+    @JoinTable(name = "domain_faculty", joinColumns = @JoinColumn(name = "domain_id"), inverseJoinColumns = @JoinColumn(name = "faculty_id"))
     Set<Faculty> facultyDomainSet = new HashSet<>();
 
     public Domain() {
