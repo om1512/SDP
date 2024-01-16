@@ -3,9 +3,12 @@ package com.local.sdp.REST;
 
 import com.local.sdp.Entity.Faculty;
 import com.local.sdp.Entity.Technologies;
+import com.local.sdp.ExceptionHandlers.ExceptionResponse;
 import com.local.sdp.Services.Interface.FacultyServiceInterface;
 import com.local.sdp.Services.Interface.TechnologyServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,5 +55,14 @@ public class TechnologyRESTController {
         technologies.setFacultyTechnologySet(set);
         technologyServiceInterface.save(technologies);
         return "mapped successfully";
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ExceptionResponse> handleException(Exception ex){
+        ExceptionResponse exceptionResponse = new ExceptionResponse();
+        exceptionResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        exceptionResponse.setMessage("Technology Exception : " + ex.getMessage());
+        exceptionResponse.setTimeStamp(System.currentTimeMillis());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }

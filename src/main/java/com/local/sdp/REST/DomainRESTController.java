@@ -2,9 +2,12 @@ package com.local.sdp.REST;
 
 import com.local.sdp.Entity.Domain;
 import com.local.sdp.Entity.Faculty;
+import com.local.sdp.ExceptionHandlers.ExceptionResponse;
 import com.local.sdp.Services.Interface.DomainServiceInterface;
 import com.local.sdp.Services.Interface.FacultyServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,5 +50,14 @@ public class DomainRESTController {
         faculties.add(faculty);
         domain.setFacultyDomainSet(faculties);
         domainServiceInterface.save(domain);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ExceptionResponse> handleException(Exception ex){
+        ExceptionResponse exceptionResponse = new ExceptionResponse();
+        exceptionResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        exceptionResponse.setMessage("Domain Exception : " + ex.getMessage());
+        exceptionResponse.setTimeStamp(System.currentTimeMillis());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }

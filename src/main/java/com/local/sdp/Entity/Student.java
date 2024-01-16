@@ -3,6 +3,8 @@ package com.local.sdp.Entity;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "student")
@@ -18,10 +20,31 @@ public class Student {
     @Column(name = "phone")
     private String phone;
 
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id")
     private User user;
+
+
+    @ManyToMany(mappedBy = "studentSet",cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    Set<Result> resultSet = new HashSet<>();
+
+    public Student(String name, Date year, String phone, User user, Set<Result> resultSet) {
+        this.name = name;
+        this.year = year;
+        this.phone = phone;
+        this.user = user;
+        this.resultSet = resultSet;
+    }
+
+
+
+    public Set<Result> getResultSet() {
+        return resultSet;
+    }
+
+    public void setResultSet(Set<Result> resultSet) {
+        this.resultSet = resultSet;
+    }
 
     public Student() {
     }
@@ -87,7 +110,6 @@ public class Student {
         this.user = user;
     }
 
-
     @Override
     public String toString() {
         return "Student{" +
@@ -96,6 +118,8 @@ public class Student {
                 ", year=" + year +
                 ", phone='" + phone + '\'' +
                 ", user=" + user +
+                ", resultSet=" + resultSet +
                 '}';
     }
+
 }
