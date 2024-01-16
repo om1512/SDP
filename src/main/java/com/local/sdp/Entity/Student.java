@@ -1,5 +1,6 @@
 package com.local.sdp.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -26,7 +27,13 @@ public class Student {
 
 
     @ManyToMany(mappedBy = "studentSet",cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    Set<Result> resultSet = new HashSet<>();
+    private Set<Result> resultSet = new HashSet<>();
+
+
+    @JsonIgnore
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name="project_group_id")
+    private Group group;
 
     public Student(String name, Date year, String phone, User user, Set<Result> resultSet) {
         this.name = name;
@@ -36,7 +43,22 @@ public class Student {
         this.resultSet = resultSet;
     }
 
+    public Group getGroup() {
+        return group;
+    }
 
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Student(String name, Date year, String phone, User user, Set<Result> resultSet, Group group) {
+        this.name = name;
+        this.year = year;
+        this.phone = phone;
+        this.user = user;
+        this.resultSet = resultSet;
+        this.group = group;
+    }
 
     public Set<Result> getResultSet() {
         return resultSet;
@@ -90,6 +112,19 @@ public class Student {
         return year;
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", year=" + year +
+                ", phone='" + phone + '\'' +
+                ", user=" + user +
+                ", resultSet=" + resultSet +
+                ", group=" + group +
+                '}';
+    }
+
     public void setYear(Date year) {
         this.year = year;
     }
@@ -108,18 +143,6 @@ public class Student {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", year=" + year +
-                ", phone='" + phone + '\'' +
-                ", user=" + user +
-                ", resultSet=" + resultSet +
-                '}';
     }
 
 }
