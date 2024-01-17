@@ -2,13 +2,10 @@ package com.local.sdp.DAO.Repository;
 
 import com.local.sdp.DAO.Interface.DomainDAO;
 import com.local.sdp.Entity.Domain;
-import com.local.sdp.Entity.Technologies;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Repository

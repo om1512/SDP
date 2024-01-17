@@ -4,13 +4,10 @@ import com.local.sdp.DAO.Interface.StudentDAO;
 import com.local.sdp.Entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.Queue;
 
 @Repository
 public class StudentImpl implements StudentDAO {

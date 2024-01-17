@@ -3,11 +3,9 @@ package com.local.sdp.DAO.Repository;
 import com.local.sdp.DAO.Interface.TechnologyDAO;
 import com.local.sdp.Entity.Technologies;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 

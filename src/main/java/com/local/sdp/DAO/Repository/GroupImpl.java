@@ -1,9 +1,7 @@
 package com.local.sdp.DAO.Repository;
 
 import com.local.sdp.DAO.Interface.GroupDAO;
-import com.local.sdp.Entity.Domain;
 import com.local.sdp.Entity.Group;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

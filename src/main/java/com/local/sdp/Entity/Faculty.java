@@ -2,7 +2,9 @@ package com.local.sdp.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,6 +34,9 @@ public class Faculty {
     @ManyToMany(mappedBy = "facultyDomainSet",cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     Set<Domain> domainSet = new HashSet<>();
 
+    @OneToMany(mappedBy = "faculty", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Group> groupList  = new ArrayList<>();
+
     public Faculty() {
     }
 
@@ -41,6 +46,23 @@ public class Faculty {
         this.phone = phone;
     }
 
+    public Faculty(String name, int experience, String phone, User user, Set<Technologies> technologiesSet, Set<Domain> domainSet, List<Group> groupList) {
+        this.name = name;
+        this.experience = experience;
+        this.phone = phone;
+        this.user = user;
+        this.technologiesSet = technologiesSet;
+        this.domainSet = domainSet;
+        this.groupList = groupList;
+    }
+
+    public List<Group> getGroupList() {
+        return groupList;
+    }
+
+    public void setGroupList(List<Group> groupList) {
+        this.groupList = groupList;
+    }
 
     public Set<Technologies> getTechnologiesSet() {
         return technologiesSet;
@@ -108,6 +130,7 @@ public class Faculty {
                 ", user=" + user +
                 ", technologiesSet=" + technologiesSet +
                 ", domainSet=" + domainSet +
+                ", groupList=" + groupList +
                 '}';
     }
 

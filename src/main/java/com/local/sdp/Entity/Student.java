@@ -3,9 +3,7 @@ package com.local.sdp.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "student")
@@ -34,6 +32,19 @@ public class Student {
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name="project_group_id")
     private Group group;
+
+
+    public List<JoinRequest> getJoinRequestList() {
+        return joinRequestList;
+    }
+
+    public void setJoinRequestList(List<JoinRequest> joinRequestList) {
+        this.joinRequestList = joinRequestList;
+    }
+
+    @OneToMany(mappedBy = "student", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonIgnore
+    private List<JoinRequest> joinRequestList = new ArrayList<>();
 
     public Student(String name, Date year, String phone, User user, Set<Result> resultSet) {
         this.name = name;
@@ -112,19 +123,6 @@ public class Student {
         return year;
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", year=" + year +
-                ", phone='" + phone + '\'' +
-                ", user=" + user +
-                ", resultSet=" + resultSet +
-                ", group=" + group +
-                '}';
-    }
-
     public void setYear(Date year) {
         this.year = year;
     }
@@ -145,4 +143,17 @@ public class Student {
         this.user = user;
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", year=" + year +
+                ", phone='" + phone + '\'' +
+                ", user=" + user +
+                ", resultSet=" + resultSet +
+                ", group=" + group +
+                ", joinRequestList=" + joinRequestList +
+                '}';
+    }
 }

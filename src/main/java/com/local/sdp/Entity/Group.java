@@ -1,7 +1,10 @@
 package com.local.sdp.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.mapping.Join;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +31,40 @@ public class Group {
 
     @OneToMany(mappedBy = "group", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Student> studentList = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name="project_guide_id")
+    private Faculty faculty;
+
+    @OneToMany(mappedBy = "group", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonIgnore
+    private List<JoinRequest> joinRequestList  = new ArrayList<>();
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
+    public List<JoinRequest> getJoinRequestList() {
+        return joinRequestList;
+    }
+
+    public void setJoinRequestList(List<JoinRequest> joinRequestList) {
+        this.joinRequestList = joinRequestList;
+    }
+
+    public Group(String groupName, Student student, int year, int rank, List<Student> studentList, Faculty faculty) {
+        this.groupName = groupName;
+        this.student = student;
+        this.year = year;
+        this.rank = rank;
+        this.studentList = studentList;
+        this.faculty = faculty;
+    }
 
     public Group(String groupName, Student student, int year) {
         this.groupName = groupName;
@@ -115,6 +152,8 @@ public class Group {
                 ", year=" + year +
                 ", rank=" + rank +
                 ", studentList=" + studentList +
+                ", faculty=" + faculty +
+                ", joinRequestList=" + joinRequestList +
                 '}';
     }
 }
