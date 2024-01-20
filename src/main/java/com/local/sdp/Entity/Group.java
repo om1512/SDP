@@ -41,6 +41,24 @@ public class Group {
     @JsonIgnore
     private List<JoinRequest> joinRequestList  = new ArrayList<>();
 
+    @OneToMany(mappedBy = "projectGroup", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonIgnore
+    private List<Projects> customProjectList = new ArrayList<>();
+
+    // allocated project
+    @OneToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH} )
+    @JoinColumn(name = "allocated_project_id")
+    private Projects project;
+
+
+    public List<Projects> getCustomProjectList() {
+        return customProjectList;
+    }
+
+    public void setCustomProjectList(List<Projects> customProjectList) {
+        this.customProjectList = customProjectList;
+    }
+
     public Faculty getFaculty() {
         return faculty;
     }
@@ -55,6 +73,14 @@ public class Group {
 
     public void setJoinRequestList(List<JoinRequest> joinRequestList) {
         this.joinRequestList = joinRequestList;
+    }
+
+    public Projects getProject() {
+        return project;
+    }
+
+    public void setProject(Projects project) {
+        this.project = project;
     }
 
     public Group(String groupName, Student student, int year, int rank, List<Student> studentList, Faculty faculty) {
@@ -154,6 +180,8 @@ public class Group {
                 ", studentList=" + studentList +
                 ", faculty=" + faculty +
                 ", joinRequestList=" + joinRequestList +
+                ", customProjectList=" + customProjectList +
+                ", project=" + project +
                 '}';
     }
 }

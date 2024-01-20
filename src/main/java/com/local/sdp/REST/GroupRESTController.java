@@ -3,17 +3,23 @@ package com.local.sdp.REST;
 
 import com.local.sdp.Entity.Faculty;
 import com.local.sdp.Entity.Group;
+import com.local.sdp.Entity.Projects;
 import com.local.sdp.Entity.Student;
 import com.local.sdp.ExceptionHandlers.ExceptionResponse;
 import com.local.sdp.Services.Interface.FacultyServiceInterface;
 import com.local.sdp.Services.Interface.GroupServiceInterface;
+import com.local.sdp.Services.Interface.ProjectsServiceInterface;
 import com.local.sdp.Services.Interface.StudentServiceInterface;
+import com.local.sdp.Utils.group;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.PropertyResolverExtensionsKt;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -27,6 +33,9 @@ public class GroupRESTController {
 
     @Autowired
     FacultyServiceInterface facultyServiceInterface;
+
+    @Autowired
+    ProjectsServiceInterface projectsServiceInterface;
 
     @PostMapping("/group/createGroup/{stuId}")
     String createGroup(@RequestBody Group group, @PathVariable int stuId){
@@ -97,6 +106,30 @@ public class GroupRESTController {
         return "Faculty " + faculty.getName() + " Assigned to Group " + group.getGroupName();
     }
 
+    @PostMapping("/group/allocateProject/{groupId}/{proId}")
+    String allocateProject(@PathVariable int groupId, @PathVariable int proId){
+        Group group = groupServiceInterface.getGroupById(groupId);
+        if(group == null) return "group does not exist";
+        Projects projects = projectsServiceInterface.getProjectById(proId);
+        group.setProject(projects);
+        return "project " + projects.getName() + " allocated to " + group.getGroupName();
+    }
+
+
+    @GetMapping("/group/assignRank")
+    void assignRank(){
+        List<Group> groupList = groupServiceInterface.groupList();
+        List<group> groups = new ArrayList<>();
+        for(Group g : groupList){
+            groups.add(new group(g.getId(), g.getStudentList()));
+        }
+        Collections.sort(groups);
+        for(int i=1;i<=groups.size();i++){
+            Group groupToAssignRank = groupServiceInterface.getGroupById(groups.get(i-1).groupId);
+            groupToAssignRank.setRank(i);
+            groupServiceInterface.save(groupToAssignRank);
+        }
+    }
 
 
     @ExceptionHandler

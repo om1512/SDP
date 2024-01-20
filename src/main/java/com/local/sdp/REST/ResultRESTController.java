@@ -21,8 +21,10 @@ public class ResultRESTController {
     @Autowired
     StudentServiceInterface studentServiceInterface;
 
-    @PostMapping("/result")
-    void save(@RequestBody Result result){
+    @PostMapping("/result/{stuId}")
+    void save(@RequestBody Result result, @PathVariable int stuId){
+        Student student = studentServiceInterface.findById(stuId);
+        result.setStudent(student);
         resultServiceInterface.save(result);
     }
 
@@ -39,17 +41,6 @@ public class ResultRESTController {
     @GetMapping("/result/{id}")
     Result getResultById(@PathVariable int id){
         return resultServiceInterface.getResultById(id);
-    }
-
-    @PostMapping("/result/map/{stuId}/{resId}")
-    String mapResultWithStudent(@PathVariable int stuId, @PathVariable int resId){
-        Result result = resultServiceInterface.getResultById(resId);
-        Student student = studentServiceInterface.findById(stuId);
-        Set<Student> students = result.getStudentSet();
-        students.add(student);
-        result.setStudentSet(students);
-        resultServiceInterface.save(result);
-        return "Mapped success!";
     }
 
     @ExceptionHandler

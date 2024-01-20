@@ -20,9 +20,9 @@ public class Result {
     private double cpi;
 
     @JsonIgnore
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "result_student", joinColumns = @JoinColumn(name = "result_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
-    Set<Student> studentSet = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
 
     public Result() {
     }
@@ -33,11 +33,12 @@ public class Result {
         this.cpi = cpi;
     }
 
-    public Result(int semNo, double spi, double cpi, Set<Student> studentSet) {
+
+    public Result(int semNo, double spi, double cpi, Student student) {
         this.semNo = semNo;
         this.spi = spi;
         this.cpi = cpi;
-        this.studentSet = studentSet;
+        this.student = student;
     }
 
     public int getId() {
@@ -72,12 +73,12 @@ public class Result {
         this.cpi = cpi;
     }
 
-    public Set<Student> getStudentSet() {
-        return studentSet;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setStudentSet(Set<Student> studentSet) {
-        this.studentSet = studentSet;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     @Override
@@ -87,7 +88,7 @@ public class Result {
                 ", semNo=" + semNo +
                 ", spi=" + spi +
                 ", cpi=" + cpi +
-                ", studentSet=" + studentSet +
+                ", student=" + student +
                 '}';
     }
 }
