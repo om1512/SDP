@@ -1,15 +1,12 @@
 package com.local.sdp.REST;
 
-import com.local.sdp.DAO.Interface.ProjectChoiceDAO;
 import com.local.sdp.Entity.Group;
 import com.local.sdp.Entity.ProjectChoice;
 import com.local.sdp.Entity.Projects;
 import com.local.sdp.Entity.Student;
 import com.local.sdp.Services.Interface.*;
-import com.local.sdp.Utils.project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 
 @RestController
@@ -103,6 +100,8 @@ public class ProjectChoiceRESTController {
         for(int i:employeeByKey){
             ans.add(groupServiceInterface.getGroupById(map.get(i)));
         }
+
+
 
         return ans;
     }
