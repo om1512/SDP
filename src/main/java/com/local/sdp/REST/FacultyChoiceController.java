@@ -4,14 +4,11 @@ package com.local.sdp.REST;
 import com.local.sdp.Entity.Faculty;
 import com.local.sdp.Entity.FacultyChoice;
 import com.local.sdp.Entity.Group;
-import com.local.sdp.Entity.ProjectChoice;
 import com.local.sdp.Services.Interface.FacultyChoiceServiceInterface;
 import com.local.sdp.Services.Interface.FacultyServiceInterface;
 import com.local.sdp.Services.Interface.GroupServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 
 @RestController
