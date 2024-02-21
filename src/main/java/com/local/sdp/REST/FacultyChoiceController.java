@@ -7,8 +7,13 @@ import com.local.sdp.Entity.Group;
 import com.local.sdp.Services.Interface.FacultyChoiceServiceInterface;
 import com.local.sdp.Services.Interface.FacultyServiceInterface;
 import com.local.sdp.Services.Interface.GroupServiceInterface;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.http.HttpResponse;
 import java.util.*;
 
 @RestController
@@ -24,7 +29,7 @@ public class FacultyChoiceController {
     FacultyServiceInterface facultyServiceInterface;
 
     @PostMapping("/facultyChoice/{groupId}/{facultyId}")
-    void addFacultyChoice(@PathVariable int groupId, @PathVariable int facultyId){
+    ResponseEntity<String> addFacultyChoice(@PathVariable int groupId, @PathVariable int facultyId){
         Group group = groupServiceInterface.getGroupById(groupId);
         Faculty faculty = facultyServiceInterface.getFacultyById(facultyId);
         FacultyChoice facultyChoice = new FacultyChoice();
@@ -32,13 +37,14 @@ public class FacultyChoiceController {
         facultyChoice.setFaculty(faculty);
         facultyChoice.setPriority(facultyChoiceInterface.getAllFacultyChoiceByGroup(groupId).size() + 1);
         facultyChoiceInterface.save(facultyChoice);
+        return new ResponseEntity<>("Choice Filled Success", HttpStatus.OK);
     }
 
 
     @PostMapping("/facultyChoice/changePriority/{groupId}/{facultyId}/{priority}")
-    void changePriority(@PathVariable int groupId, @PathVariable int facultyId, @PathVariable int priority){
+    ResponseEntity<String> changePriority(@PathVariable int groupId, @PathVariable int facultyId, @PathVariable int priority){
         FacultyChoice facultyChoice = facultyChoiceInterface.getFacultyChoiceById(groupId, facultyId);
-        if(facultyChoice == null) return;
+        if(facultyChoice == null) return new ResponseEntity<>("Faculty does not exist", HttpStatus.NOT_FOUND);
         List<FacultyChoice> allChoice = facultyChoiceInterface.getAllFacultyChoiceByGroup(groupId);
         for(FacultyChoice f : allChoice){
             if(priority < facultyChoice.getPriority() && f.getPriority() >= priority && f.getPriority() < facultyChoice.getPriority()){
@@ -49,23 +55,24 @@ public class FacultyChoiceController {
         }
         facultyChoice.setPriority(priority);
         facultyChoiceInterface.save(facultyChoice);
+        return new ResponseEntity<>("Priority changed successfully", HttpStatus.OK);
     }
 
     @GetMapping("/facultyChoice")
-    List<FacultyChoice> getAllFaculties(){
-        return facultyChoiceInterface.getAll();
+    ResponseEntity<List<FacultyChoice>> getAllFaculties(){
+        return new ResponseEntity<>(facultyChoiceInterface.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/facultyChoice/{id}")
-    FacultyChoice getById(@PathVariable int id){
-        return facultyChoiceInterface.getFacultyChoiceById(id);
+    ResponseEntity<FacultyChoice> getById(@PathVariable int id){
+        return new ResponseEntity<>(facultyChoiceInterface.getFacultyChoiceById(id), HttpStatus.OK);
     }
 
 
     @PostMapping("/facultyChoice/assignFaculty")
-    void assignFaculty(){
+    ResponseEntity<String> assignFaculty(){
         List<Group> groups = groupServiceInterface.groupList();
-        List<Group> sortedGroups = sortGroups(groups);
+        List<Group> sortedGroups = sortGroups(groups).getBody();
         int maxGroupsAllow = Math.ceilDiv(groups.size(), facultyServiceInterface.getFaculties().size());
         // key : faculty_id, value : number of groups that faculty is leading
         HashMap<Integer, Integer> faculty = new HashMap<>();
@@ -88,9 +95,11 @@ public class FacultyChoiceController {
                 i++;
             }
         }
+
+        return new ResponseEntity<>("Faculty assigned to all the groups", HttpStatus.OK);
     }
 
-    private List<Group> sortGroups(List<Group> groups) {
+    private ResponseEntity<List<Group>> sortGroups(List<Group> groups) {
         Map<Integer, Integer> map = new HashMap<>();
         for(Group group : groups){
             map.put(group.getRank(), group.getId());
@@ -102,6 +111,6 @@ public class FacultyChoiceController {
             ans.add(groupServiceInterface.getGroupById(map.get(i)));
         }
 
-        return ans;
+        return new ResponseEntity<>(ans, HttpStatus.OK);
     }
 }

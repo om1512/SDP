@@ -5,6 +5,7 @@ import com.local.sdp.Entity.Faculty;
 import com.local.sdp.ExceptionHandlers.ExceptionResponse;
 import com.local.sdp.Services.Interface.DomainServiceInterface;
 import com.local.sdp.Services.Interface.FacultyServiceInterface;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,33 +24,35 @@ public class DomainRESTController {
     FacultyServiceInterface facultyServiceInterface;
 
     @PostMapping("/domain")
-    void save(@RequestBody Domain domain){
+    ResponseEntity<String> save(@RequestBody Domain domain){
         domainServiceInterface.save(domain);
+        return new ResponseEntity<>("domain stored successfully", HttpStatus.OK);
     }
 
     @DeleteMapping("/domain/{id}")
-    int delete(@PathVariable int id){
-        return domainServiceInterface.delete(id);
+    ResponseEntity<Integer> delete(@PathVariable int id){
+        return new ResponseEntity<>(domainServiceInterface.delete(id), HttpStatus.OK);
     }
 
     @GetMapping("/domain")
-    List<Domain> domainList(){
-        return domainServiceInterface.getDomain();
+    ResponseEntity<List<Domain>> domainList(){
+        return new ResponseEntity<>(domainServiceInterface.getDomain(), HttpStatus.OK);
     }
 
     @GetMapping("/domain/{id}")
-    Domain domain(@PathVariable int id){
-        return domainServiceInterface.getDomainById(id);
+    ResponseEntity<Domain> domain(@PathVariable int id){
+        return new ResponseEntity<>(domainServiceInterface.getDomainById(id), HttpStatus.OK);
     }
 
     @PostMapping("/domain/map/{facId}/{domainId}")
-    void map(@PathVariable int facId, @PathVariable int domainId){
+    ResponseEntity<String> map(@PathVariable int facId, @PathVariable int domainId){
         Domain domain = domainServiceInterface.getDomainById(domainId);
         Faculty faculty = facultyServiceInterface.getFacultyById(facId);
         Set<Faculty> faculties = domain.getFacultyDomainSet();
         faculties.add(faculty);
         domain.setFacultyDomainSet(faculties);
         domainServiceInterface.save(domain);
+        return new ResponseEntity<>("mapped successfully", HttpStatus.OK);
     }
 
     @ExceptionHandler

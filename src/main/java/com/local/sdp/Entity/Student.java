@@ -14,6 +14,13 @@ public class Student {
     private int id;
     @Column(name = "student_name")
     private String name;
+
+    @Column(name = "student_id")
+    private String studentId;
+
+    @Column(name = "roll_no")
+    private String rollNumber;
+
     @Column(name = "admission_year")
     private Date year;
     @Column(name = "phone")
@@ -49,6 +56,19 @@ public class Student {
 
     public Student(String name, Date year, String phone, User user, List<Result> resultList, Group group, List<JoinRequest> joinRequestList) {
         this.name = name;
+        this.year = year;
+        this.phone = phone;
+        this.user = user;
+        this.resultList = resultList;
+        this.group = group;
+        this.joinRequestList = joinRequestList;
+    }
+
+    public Student(int id, String name, String studentId, String rollNumber, Date year, String phone, User user, List<Result> resultList, Group group, List<JoinRequest> joinRequestList) {
+        this.id = id;
+        this.name = name;
+        this.studentId = studentId;
+        this.rollNumber = rollNumber;
         this.year = year;
         this.phone = phone;
         this.user = user;
@@ -113,11 +133,29 @@ public class Student {
         this.group = group;
     }
 
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getRollNumber() {
+        return rollNumber;
+    }
+
+    public void setRollNumber(String rollNumber) {
+        this.rollNumber = rollNumber;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", studentId='" + studentId + '\'' +
+                ", rollNumber='" + rollNumber + '\'' +
                 ", year=" + year +
                 ", phone='" + phone + '\'' +
                 ", user=" + user +
