@@ -22,6 +22,10 @@ public class Faculty {
     private int experience;
     @Column(name = "phone")
     private String phone;
+
+    @Column(name = "available") // New field
+    private boolean available; // New field
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id")
     private User user;
@@ -38,12 +42,14 @@ public class Faculty {
     private List<Group> groupList  = new ArrayList<>();
 
     public Faculty() {
+        this.available = false;
     }
 
     public Faculty(String name, int experience, String phone) {
         this.name = name;
         this.experience = experience;
         this.phone = phone;
+        this.available = false;
     }
 
     public Faculty(String name, int experience, String phone, User user, Set<Technologies> technologiesSet, Set<Domain> domainSet, List<Group> groupList) {
@@ -54,6 +60,7 @@ public class Faculty {
         this.technologiesSet = technologiesSet;
         this.domainSet = domainSet;
         this.groupList = groupList;
+        this.available = false;
     }
 
     public List<Group> getGroupList() {
@@ -62,6 +69,14 @@ public class Faculty {
 
     public void setGroupList(List<Group> groupList) {
         this.groupList = groupList;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     public Set<Technologies> getTechnologiesSet() {

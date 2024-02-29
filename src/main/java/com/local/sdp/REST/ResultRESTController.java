@@ -14,6 +14,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ResultRESTController {
     @Autowired
     ResultServiceInterface resultServiceInterface;
