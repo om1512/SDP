@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/request")
 public class JoinRequestRESTController {
     @Autowired
     JoinRequestServiceInterface joinRequestServiceInterface;
@@ -27,7 +27,7 @@ public class JoinRequestRESTController {
     @Autowired
     GroupServiceInterface groupServiceInterface;
 
-    @PostMapping("/request/{studentId}/{groupId}")
+    @PostMapping("/{studentId}/{groupId}")
     ResponseEntity<String> sendRequest(@PathVariable int studentId, @PathVariable int groupId){
         JoinRequest joinRequest = new JoinRequest();
         joinRequest.setStatus(JoinRequest.JoinRequestStatus.PENDING);
@@ -43,24 +43,24 @@ public class JoinRequestRESTController {
     }
 
 
-    @GetMapping("/request")
+    @GetMapping("")
     ResponseEntity<List<JoinRequest>> getAllRequests(){
         return new ResponseEntity<>(joinRequestServiceInterface.getRequest(), HttpStatus.OK);
     }
 
 
-    @GetMapping("/request/student/{studentId}")
+    @GetMapping("/student/{studentId}")
     ResponseEntity<List<JoinRequest>> getAllStudentRequests(@PathVariable int studentId){
         return new ResponseEntity<>(joinRequestServiceInterface.allRequestOfStudent(studentId), HttpStatus.OK);
     }
 
 
-    @GetMapping("/request/group/{groupId}")
+    @GetMapping("/group/{groupId}")
     ResponseEntity<List<JoinRequest>> getAllRequestByGroup(@PathVariable int groupId){
         return new ResponseEntity<>(joinRequestServiceInterface.allRequestOfGroup(groupId), HttpStatus.OK);
     }
 
-    @PostMapping("/request/{creatorId}/approve/{groupId}/{stuId}")
+    @PostMapping("/{creatorId}/approve/{groupId}/{stuId}")
     ResponseEntity<String> approveRequest(@PathVariable int creatorId, @PathVariable int groupId, @PathVariable int stuId){
         Student student =studentServiceInterface.findById(stuId);
         Group group = groupServiceInterface.getGroupById(groupId);
@@ -75,7 +75,7 @@ public class JoinRequestRESTController {
         return new ResponseEntity<>("request approved", HttpStatus.OK);
     }
 
-    @PostMapping("/request/{creatorId}/reject/{groupId}/{stuId}")
+    @PostMapping("/{creatorId}/reject/{groupId}/{stuId}")
     ResponseEntity<String> rejectRequest(@PathVariable int creatorId, @PathVariable int groupId, @PathVariable int stuId){
         Group group = groupServiceInterface.getGroupById(groupId);
         if(group == null) return new ResponseEntity<>("group does not exist", HttpStatus.NOT_FOUND);

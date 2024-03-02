@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/tech")
 public class TechnologyRESTController {
 
     @Autowired
@@ -24,29 +24,29 @@ public class TechnologyRESTController {
     @Autowired
     FacultyServiceInterface facultyServiceInterface;
 
-    @PostMapping("/tech")
+    @PostMapping("")
     String save(@RequestBody Technologies technologies) {
         technologyServiceInterface.save(technologies);
         return "saved successfully";
     }
 
-    @DeleteMapping("/tech/{id}")
+    @DeleteMapping("/{id}")
     int delete(@PathVariable int id){
         return technologyServiceInterface.delete(id);
     }
 
-    @GetMapping("/tech")
+    @GetMapping("")
     List<Technologies> getTechnology(){
         return technologyServiceInterface.getTechnology();
     }
 
-    @GetMapping("/tech/{id}")
+    @GetMapping("/{id}")
     Technologies getTechnologyById(@PathVariable int id){
         return technologyServiceInterface.getTechnologyById(id);
     }
 
 
-    @PostMapping("/tech/map/{facId}/{techId}")
+    @PostMapping("/map/{facId}/{techId}")
     String mapFacultyToTechnology(@PathVariable(name = "facId") int facId, @PathVariable(name= "techId") int techId){
         Faculty faculty = facultyServiceInterface.getFacultyById(facId);
         Technologies technologies = technologyServiceInterface.getTechnologyById(techId);

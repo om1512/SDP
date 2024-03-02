@@ -17,7 +17,7 @@ import java.net.http.HttpResponse;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/facultyChoice")
 public class FacultyChoiceController {
     @Autowired
     FacultyChoiceServiceInterface facultyChoiceInterface;
@@ -28,7 +28,7 @@ public class FacultyChoiceController {
     @Autowired
     FacultyServiceInterface facultyServiceInterface;
 
-    @PostMapping("/facultyChoice/{groupId}/{facultyId}")
+    @PostMapping("/{groupId}/{facultyId}")
     ResponseEntity<String> addFacultyChoice(@PathVariable int groupId, @PathVariable int facultyId){
         Group group = groupServiceInterface.getGroupById(groupId);
         Faculty faculty = facultyServiceInterface.getFacultyById(facultyId);
@@ -41,7 +41,7 @@ public class FacultyChoiceController {
     }
 
 
-    @PostMapping("/facultyChoice/changePriority/{groupId}/{facultyId}/{priority}")
+    @PostMapping("/changePriority/{groupId}/{facultyId}/{priority}")
     ResponseEntity<String> changePriority(@PathVariable int groupId, @PathVariable int facultyId, @PathVariable int priority){
         FacultyChoice facultyChoice = facultyChoiceInterface.getFacultyChoiceById(groupId, facultyId);
         if(facultyChoice == null) return new ResponseEntity<>("Faculty does not exist", HttpStatus.NOT_FOUND);
@@ -58,18 +58,18 @@ public class FacultyChoiceController {
         return new ResponseEntity<>("Priority changed successfully", HttpStatus.OK);
     }
 
-    @GetMapping("/facultyChoice")
+    @GetMapping("")
     ResponseEntity<List<FacultyChoice>> getAllFaculties(){
         return new ResponseEntity<>(facultyChoiceInterface.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/facultyChoice/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<FacultyChoice> getById(@PathVariable int id){
         return new ResponseEntity<>(facultyChoiceInterface.getFacultyChoiceById(id), HttpStatus.OK);
     }
 
 
-    @PostMapping("/facultyChoice/assignFaculty")
+    @PostMapping("/assignFaculty")
     ResponseEntity<String> assignFaculty(){
         List<Group> groups = groupServiceInterface.groupList();
         List<Group> sortedGroups = sortGroups(groups).getBody();

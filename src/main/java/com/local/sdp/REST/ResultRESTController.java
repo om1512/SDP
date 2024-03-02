@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/result")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ResultRESTController {
     @Autowired
@@ -22,24 +22,24 @@ public class ResultRESTController {
     @Autowired
     StudentServiceInterface studentServiceInterface;
 
-    @PostMapping("/result/{stuId}")
+    @PostMapping("/{stuId}")
     void save(@RequestBody Result result, @PathVariable int stuId){
         Student student = studentServiceInterface.findById(stuId);
         result.setStudent(student);
         resultServiceInterface.save(result);
     }
 
-    @DeleteMapping("/result/{id}")
+    @DeleteMapping("/{id}")
     int delete(@PathVariable int id){
         return resultServiceInterface.delete(id);
     }
 
-    @GetMapping("/result")
+    @GetMapping("")
     List<Result> resultList(){
         return resultServiceInterface.getResult();
     }
 
-    @GetMapping("/result/{id}")
+    @GetMapping("/{id}")
     Result getResultById(@PathVariable int id){
         return resultServiceInterface.getResultById(id);
     }

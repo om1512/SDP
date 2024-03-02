@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/group")
 public class GroupRESTController {
     @Autowired
     GroupServiceInterface groupServiceInterface;
@@ -34,7 +34,7 @@ public class GroupRESTController {
     @Autowired
     ProjectsServiceInterface projectsServiceInterface;
 
-    @PostMapping("/group/createGroup/{stuId}")
+    @PostMapping("/createGroup/{stuId}")
     ResponseEntity<String> createGroup(@RequestBody Group group, @PathVariable int stuId){
         Student student = studentServiceInterface.findById(stuId);
         List<Student> studentList = new ArrayList<>();
@@ -47,7 +47,7 @@ public class GroupRESTController {
         return new ResponseEntity<>("group created by : " + student.getName(), HttpStatus.OK);
     }
 
-    @PostMapping("/group/joinGroup/{stuId}/{groupId}")
+    @PostMapping("/joinGroup/{stuId}/{groupId}")
     ResponseEntity<String> joinGroup(@PathVariable int stuId, @PathVariable int groupId){
         Student student =studentServiceInterface.findById(stuId);
         Group group = groupServiceInterface.getGroupById(groupId);
@@ -62,17 +62,17 @@ public class GroupRESTController {
     }
 
 
-    @GetMapping("/group")
+    @GetMapping("")
     ResponseEntity<List<Group>> getAllGroups(){
         return new ResponseEntity<>(groupServiceInterface.groupList(), HttpStatus.OK);
     }
 
-    @GetMapping("/group/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<Group> getGroupById(@PathVariable int id){
         return new ResponseEntity<>(groupServiceInterface.getGroupById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/group/leaveGroup/{stuId}/{groupId}")
+    @PostMapping("/leaveGroup/{stuId}/{groupId}")
     ResponseEntity<String> leaveGroup(@PathVariable int stuId, @PathVariable int groupId){
         Group group = groupServiceInterface.getGroupById(groupId);
         Student student = studentServiceInterface.findById(stuId);
@@ -81,7 +81,7 @@ public class GroupRESTController {
         return new ResponseEntity<>("Student " + student.getName() + " leaved group " + group.getGroupName(), HttpStatus.OK );
     }
 
-    @PostMapping("/group/deleteGroup/{stuId}/{groupId}")
+    @PostMapping("/deleteGroup/{stuId}/{groupId}")
     ResponseEntity<String> deleteGroup(@PathVariable int stuId, @PathVariable int groupId){
         Group group = groupServiceInterface.getGroupById(groupId);
         if(stuId != group.getStudent().getId()) return new ResponseEntity<>("Unauthorized Student : trying to delete group", HttpStatus.OK);
@@ -94,7 +94,7 @@ public class GroupRESTController {
         return new ResponseEntity<>("trying to delete Group", HttpStatus.OK);
     }
 
-    @PostMapping("/group/assignFaculty/{facId}/{groupId}")
+    @PostMapping("/assignFaculty/{facId}/{groupId}")
     ResponseEntity<String> assignFaculty(@PathVariable int facId, @PathVariable int groupId){
         Faculty faculty = facultyServiceInterface.getFacultyById(facId);
         Group group = groupServiceInterface.getGroupById(groupId);
@@ -103,7 +103,7 @@ public class GroupRESTController {
         return new ResponseEntity<>("Faculty " + faculty.getName() + " Assigned to Group " + group.getGroupName(), HttpStatus.OK);
     }
 
-    @PostMapping("/group/allocateProject/{groupId}/{proId}")
+    @PostMapping("/allocateProject/{groupId}/{proId}")
     ResponseEntity<String> allocateProject(@PathVariable int groupId, @PathVariable int proId){
         Group group = groupServiceInterface.getGroupById(groupId);
         if(group == null) return new ResponseEntity<>("group does not exist", HttpStatus.OK);
@@ -113,7 +113,7 @@ public class GroupRESTController {
     }
 
 
-    @GetMapping("/group/assignRank")
+    @GetMapping("/assignRank")
     ResponseEntity<String> assignRank(){
         List<Group> groupList = groupServiceInterface.groupList();
         List<group> groups = new ArrayList<>();

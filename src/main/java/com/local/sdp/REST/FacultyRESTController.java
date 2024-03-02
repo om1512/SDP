@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/faculty")
 @CrossOrigin(origins = "http://localhost:4200")
 public class FacultyRESTController {
 
@@ -32,22 +32,22 @@ public class FacultyRESTController {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/faculty")
+    @GetMapping("")
     ResponseEntity<List<Faculty>> getFaculties(){
         return new ResponseEntity<>(facultyServiceInterface.getFaculties(), HttpStatus.OK);
     }
 
-    @GetMapping("/faculty/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<Faculty> getFacultyById(@PathVariable int id){
         return new ResponseEntity<>(facultyServiceInterface.getFacultyById(id),  HttpStatus.OK);
     }
 
-    @GetMapping("/faculty/userId/{id}")
+    @GetMapping("/userId/{id}")
     ResponseEntity<Faculty> getFacultyByUserId(@PathVariable int id){
         return new ResponseEntity<>(facultyServiceInterface.getFacultyByUserId(id), HttpStatus.OK);
     }
 
-    @PostMapping("/faculty")
+    @PostMapping("")
     ResponseEntity<String> saveOrUpdate(@RequestBody Faculty faculty){
         facultyServiceInterface.save(faculty);
         return new ResponseEntity<>("Faculty saved or updated.",HttpStatus.OK);

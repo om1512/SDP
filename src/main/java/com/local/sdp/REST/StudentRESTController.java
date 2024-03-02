@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/student")
 @CrossOrigin(origins = "http://localhost:4200")
 public class StudentRESTController {
     StudentServiceInterface studentServiceInterface;
@@ -29,27 +29,27 @@ public class StudentRESTController {
         exceptionResponse.setTimeStamp(System.currentTimeMillis());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
-    @GetMapping("/student")
+    @GetMapping("")
     List<Student> getStudents(){
         return studentServiceInterface.findAll();
     }
 
-    @GetMapping("/student/{id}")
+    @GetMapping("/{id}")
     Student getStudentById(@PathVariable int id){
         return studentServiceInterface.findById(id);
     }
 
-    @PostMapping("/student")
+    @PostMapping("")
     void addStudent(@RequestBody Student student){
         studentServiceInterface.save(student);
     }
 
-    @GetMapping("/student/userId/{id}")
+    @GetMapping("/userId/{id}")
     Student getStudentByUserId(@PathVariable int id){
         return studentServiceInterface.findByUserId(id);
     }
 
-    @DeleteMapping("/student/{id}")
+    @DeleteMapping("/{id}")
     void deleteById(@PathVariable int id){
         studentServiceInterface.deleteById(id);
     }

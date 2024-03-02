@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/domain")
 public class DomainRESTController {
     @Autowired
     DomainServiceInterface domainServiceInterface;
@@ -23,28 +23,28 @@ public class DomainRESTController {
     @Autowired
     FacultyServiceInterface facultyServiceInterface;
 
-    @PostMapping("/domain")
+    @PostMapping("")
     ResponseEntity<String> save(@RequestBody Domain domain){
         domainServiceInterface.save(domain);
         return new ResponseEntity<>("domain stored successfully", HttpStatus.OK);
     }
 
-    @DeleteMapping("/domain/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<Integer> delete(@PathVariable int id){
         return new ResponseEntity<>(domainServiceInterface.delete(id), HttpStatus.OK);
     }
 
-    @GetMapping("/domain")
+    @GetMapping("")
     ResponseEntity<List<Domain>> domainList(){
         return new ResponseEntity<>(domainServiceInterface.getDomain(), HttpStatus.OK);
     }
 
-    @GetMapping("/domain/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<Domain> domain(@PathVariable int id){
         return new ResponseEntity<>(domainServiceInterface.getDomainById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/domain/map/{facId}/{domainId}")
+    @PostMapping("/map/{facId}/{domainId}")
     ResponseEntity<String> map(@PathVariable int facId, @PathVariable int domainId){
         Domain domain = domainServiceInterface.getDomainById(domainId);
         Faculty faculty = facultyServiceInterface.getFacultyById(facId);

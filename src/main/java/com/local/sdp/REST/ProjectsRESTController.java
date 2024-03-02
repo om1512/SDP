@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/project")
 public class ProjectsRESTController {
 
     @Autowired
@@ -24,14 +24,14 @@ public class ProjectsRESTController {
     @Autowired
     GroupServiceInterface groupServiceInterface;
 
-    @PostMapping("/project")
+    @PostMapping("")
     String addProject(@RequestBody Projects projects){
         projects.setCustom(false);
         projectsServiceInterface.save(projects);
         return "Project saved";
     }
 
-    @PostMapping("/project/custom/{groupId}")
+    @PostMapping("/custom/{groupId}")
     String addCustomProject(@RequestBody Projects projects, @PathVariable int groupId){
         Group group = groupServiceInterface.getGroupById(groupId);
         if(group == null) return "Group does not exist";
@@ -40,22 +40,22 @@ public class ProjectsRESTController {
         projectsServiceInterface.save(projects);
         return "Custom project saved";
     }
-    @GetMapping("/project")
+    @GetMapping("")
     List<Projects> getAllProjects(){
         return projectsServiceInterface.getAllProjects();
     }
 
-    @GetMapping("/project/{proId}")
+    @GetMapping("/{proId}")
     Projects getProjectById(@PathVariable int proId){
         return projectsServiceInterface.getProjectById(proId);
     }
 
-    @GetMapping("/project/group/{groupId}")
+    @GetMapping("/group/{groupId}")
     List<Projects> getAllProjectsVisibleToGroup(@PathVariable int groupId){
         return projectsServiceInterface.getAllProjectsVisibleToGroup(groupId);
     }
 
-    @DeleteMapping("/project/{groupId}/{projectId}")
+    @DeleteMapping("/{groupId}/{projectId}")
     String removeCustomProject(@PathVariable int groupId,@PathVariable int projectId){
         projectsServiceInterface.removeCustomProject(groupId, projectId);
         return "Project deleted successfully";
