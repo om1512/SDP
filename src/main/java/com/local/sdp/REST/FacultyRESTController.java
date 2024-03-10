@@ -47,9 +47,17 @@ public class FacultyRESTController {
         return new ResponseEntity<>(facultyServiceInterface.getFacultyByUserId(id), HttpStatus.OK);
     }
 
+
+    @GetMapping("/email/{email}")
+    ResponseEntity<Faculty> getFacultyByEmail(@PathVariable String email){
+        return new ResponseEntity<>(facultyServiceInterface.getFacultyByEmail(email), HttpStatus.OK);
+    }
+
+
     @PostMapping("")
     ResponseEntity<String> saveOrUpdate(@RequestBody Faculty faculty){
         facultyServiceInterface.save(faculty);
         return new ResponseEntity<>("Faculty saved or updated.",HttpStatus.OK);
     }
 }
+    

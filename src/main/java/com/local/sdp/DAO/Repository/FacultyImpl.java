@@ -46,6 +46,13 @@ public class FacultyImpl implements FacultyDAO {
     }
 
     @Override
+    public Faculty getFacultyByEmail(String email) {
+        TypedQuery<Faculty> facultyTypedQuery = entityManager.createQuery("SELECT f FROM Faculty f WHERE f.user.email =:email", Faculty.class);
+        facultyTypedQuery.setParameter("email", email);
+        return facultyTypedQuery.getSingleResult();
+    }
+
+    @Override
     public void deleteById(int id) {
         Faculty faculty = entityManager.find(Faculty.class, id);
         entityManager.remove(faculty);

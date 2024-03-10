@@ -18,6 +18,8 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/facultyChoice")
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class FacultyChoiceController {
     @Autowired
     FacultyChoiceServiceInterface facultyChoiceInterface;

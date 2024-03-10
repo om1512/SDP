@@ -16,6 +16,8 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/domain")
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class DomainRESTController {
     @Autowired
     DomainServiceInterface domainServiceInterface;

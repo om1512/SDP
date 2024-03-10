@@ -17,6 +17,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/request")
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class JoinRequestRESTController {
     @Autowired
     JoinRequestServiceInterface joinRequestServiceInterface;

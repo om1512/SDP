@@ -11,6 +11,8 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/projectChoice")
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class ProjectChoiceRESTController {
     @Autowired
     ProjectChoiceServiceInterface projectChoiceServiceInterface;

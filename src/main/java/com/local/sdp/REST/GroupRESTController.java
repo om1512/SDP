@@ -21,6 +21,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/group")
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class GroupRESTController {
     @Autowired
     GroupServiceInterface groupServiceInterface;
@@ -109,6 +111,7 @@ public class GroupRESTController {
         if(group == null) return new ResponseEntity<>("group does not exist", HttpStatus.OK);
         Projects projects = projectsServiceInterface.getProjectById(proId);
         group.setProject(projects);
+        groupServiceInterface.save(group);
         return new ResponseEntity<>("project " + projects.getName() + " allocated to " + group.getGroupName(), HttpStatus.OK);
     }
 
