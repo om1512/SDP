@@ -46,10 +46,10 @@ public class DomainRESTController {
         return new ResponseEntity<>(domainServiceInterface.getDomainById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/map/{facId}/{domainId}")
-    ResponseEntity<String> map(@PathVariable int facId, @PathVariable int domainId){
+    @PostMapping("/map/{facEmail}/{domainId}")
+    ResponseEntity<String> map(@PathVariable String facEmail, @PathVariable int domainId){
         Domain domain = domainServiceInterface.getDomainById(domainId);
-        Faculty faculty = facultyServiceInterface.getFacultyById(facId);
+        Faculty faculty = facultyServiceInterface.getFacultyByEmail(facEmail);
         Set<Faculty> faculties = domain.getFacultyDomainSet();
         faculties.add(faculty);
         domain.setFacultyDomainSet(faculties);

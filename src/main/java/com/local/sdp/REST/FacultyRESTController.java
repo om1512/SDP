@@ -2,8 +2,10 @@ package com.local.sdp.REST;
 
 
 import com.local.sdp.Entity.Faculty;
+import com.local.sdp.Entity.User;
 import com.local.sdp.ExceptionHandlers.ExceptionResponse;
 import com.local.sdp.Services.Interface.FacultyServiceInterface;
+import com.local.sdp.Services.Interface.UserServiceInterface;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,9 +20,12 @@ import java.util.List;
 public class FacultyRESTController {
 
     FacultyServiceInterface facultyServiceInterface;
+
+    UserServiceInterface userServiceInterface;
     @Autowired
-    FacultyRESTController(FacultyServiceInterface facultyServiceInterface){
+    FacultyRESTController(FacultyServiceInterface facultyServiceInterface, UserServiceInterface userServiceInterface){
         this.facultyServiceInterface = facultyServiceInterface;
+        this.userServiceInterface  = userServiceInterface;
     }
 
     @ExceptionHandler
@@ -56,6 +61,9 @@ public class FacultyRESTController {
 
     @PostMapping("")
     ResponseEntity<String> saveOrUpdate(@RequestBody Faculty faculty){
+        userServiceInterface.save(faculty.getUser());
+        User user = userServiceInterface.findByEmail(faculty.getUser().getEmail());
+        faculty.setUser(user);
         facultyServiceInterface.save(faculty);
         return new ResponseEntity<>("Faculty saved or updated.",HttpStatus.OK);
     }
