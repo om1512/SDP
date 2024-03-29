@@ -116,7 +116,7 @@ public class GroupRESTController {
     }
 
 
-    @GetMapping("/assignRank")
+    @PostMapping("/assignRank")
     ResponseEntity<String> assignRank(){
         List<Group> groupList = groupServiceInterface.groupList();
         List<group> groups = new ArrayList<>();

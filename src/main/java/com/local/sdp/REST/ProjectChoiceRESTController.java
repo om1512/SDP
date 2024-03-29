@@ -71,6 +71,7 @@ public class ProjectChoiceRESTController {
         List<Group> groups = groupServiceInterface.groupList();
         List<Group> sortedByRank = sortGroups(groups);
         Set<Integer> allocatedProject = new HashSet<>();
+
         for(Group group : sortedByRank){
             Map<Integer, Integer> projectMap = new HashMap<>();
             List<ProjectChoice> projectChoices = projectChoiceServiceInterface.getAllProjectChoiceByGroup(group.getId());

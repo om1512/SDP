@@ -71,14 +71,14 @@ public class FacultyChoiceController {
     }
 
 
-    @PostMapping("/assignFaculty")
+    @GetMapping("/assignFaculty")
     ResponseEntity<String> assignFaculty(){
         List<Group> groups = groupServiceInterface.groupList();
         List<Group> sortedGroups = sortGroups(groups).getBody();
         int maxGroupsAllow = Math.ceilDiv(groups.size(), facultyServiceInterface.getFaculties().size());
         // key : faculty_id, value : number of groups that faculty is leading
         HashMap<Integer, Integer> faculty = new HashMap<>();
-        for(Group group : sortedGroups){
+        for(Group group : Objects.requireNonNull(sortedGroups)){
             Map<Integer, Integer> guideMap = new HashMap<>();
             List<FacultyChoice> facultyChoicesOfGroup = facultyChoiceInterface.getAllFacultyChoiceByGroup(group.getId());
             for(FacultyChoice facultyChoice : facultyChoicesOfGroup){

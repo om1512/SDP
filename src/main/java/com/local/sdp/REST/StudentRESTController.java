@@ -2,8 +2,10 @@ package com.local.sdp.REST;
 
 
 import com.local.sdp.Entity.Student;
+import com.local.sdp.Entity.User;
 import com.local.sdp.ExceptionHandlers.ExceptionResponse;
 import com.local.sdp.Services.Interface.StudentServiceInterface;
+import com.local.sdp.Services.Interface.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,11 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class StudentRESTController {
     StudentServiceInterface studentServiceInterface;
-
+    UserServiceInterface userServiceInterface;
     @Autowired
-    StudentRESTController(StudentServiceInterface studentServiceInterface){
+    StudentRESTController(StudentServiceInterface studentServiceInterface, UserServiceInterface userServiceInterface){
         this.studentServiceInterface = studentServiceInterface;
+        this.userServiceInterface= userServiceInterface;
     }
 
     @ExceptionHandler
@@ -41,6 +44,9 @@ public class StudentRESTController {
 
     @PostMapping("")
     void addStudent(@RequestBody Student student){
+        userServiceInterface.save(student.getUser());
+        User user = userServiceInterface.findByEmail(student.getUser().getEmail());
+        student.setUser(user);
         studentServiceInterface.save(student);
     }
 
