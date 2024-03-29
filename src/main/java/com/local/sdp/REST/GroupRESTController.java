@@ -12,17 +12,19 @@ import com.local.sdp.Services.Interface.ProjectsServiceInterface;
 import com.local.sdp.Services.Interface.StudentServiceInterface;
 import com.local.sdp.Utils.group;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.PropertyResolverExtensionsKt;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/group")
-@CrossOrigin(origins = "http://localhost:4200")
-
+@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class GroupRESTController {
     @Autowired
     GroupServiceInterface groupServiceInterface;
@@ -36,8 +38,8 @@ public class GroupRESTController {
     @Autowired
     ProjectsServiceInterface projectsServiceInterface;
 
-    @PostMapping("/createGroup/{stuId}")
-    ResponseEntity<String> createGroup(@RequestBody Group group, @PathVariable int stuId){
+    @PostMapping("/group/createGroup/{stuId}")
+    String createGroup(@RequestBody Group group, @PathVariable int stuId){
         Student student = studentServiceInterface.findById(stuId);
         List<Student> studentList = new ArrayList<>();
         studentList.add(student);
@@ -46,78 +48,78 @@ public class GroupRESTController {
         groupServiceInterface.save(group);
         student.setGroup(group);
         studentServiceInterface.save(student);
-        return new ResponseEntity<>("group created by : " + student.getName(), HttpStatus.OK);
+        return "group created by : " + student.getName();
     }
 
-    @PostMapping("/joinGroup/{stuId}/{groupId}")
-    ResponseEntity<String> joinGroup(@PathVariable int stuId, @PathVariable int groupId){
+    @PostMapping("/group/joinGroup/{stuId}/{groupId}")
+    String joinGroup(@PathVariable int stuId, @PathVariable int groupId){
         Student student =studentServiceInterface.findById(stuId);
         Group group = groupServiceInterface.getGroupById(groupId);
         if(group == null){
-            return new ResponseEntity<>("Group does not exist", HttpStatus.NOT_FOUND);
+            return "Group does not exist";
         }else if(group.getStudentList().size() == 3){
-            return new ResponseEntity<>("Group is full", HttpStatus.LOCKED);
+            return "Group is full";
         }
         student.setGroup(group);
         studentServiceInterface.save(student);
-        return new ResponseEntity<>("Student "+student.getName() + " joined the group " + group.getGroupName(), HttpStatus.OK);
+        return "Student "+student.getName() + " joined the group " + group.getGroupName();
     }
 
 
-    @GetMapping("")
-    ResponseEntity<List<Group>> getAllGroups(){
-        return new ResponseEntity<>(groupServiceInterface.groupList(), HttpStatus.OK);
+    @GetMapping("/group")
+    List<Group> getAllGroups(){
+        return groupServiceInterface.groupList();
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity<Group> getGroupById(@PathVariable int id){
-        return new ResponseEntity<>(groupServiceInterface.getGroupById(id), HttpStatus.OK);
+    @GetMapping("/group/{id}")
+    Group getGroupById(@PathVariable int id){
+        return groupServiceInterface.getGroupById(id);
     }
 
-    @PostMapping("/leaveGroup/{stuId}/{groupId}")
-    ResponseEntity<String> leaveGroup(@PathVariable int stuId, @PathVariable int groupId){
+    @PostMapping("/group/leaveGroup/{stuId}/{groupId}")
+    String leaveGroup(@PathVariable int stuId, @PathVariable int groupId){
         Group group = groupServiceInterface.getGroupById(groupId);
         Student student = studentServiceInterface.findById(stuId);
+        group.getStudentList().remove(student);
         student.setGroup(null);
         studentServiceInterface.save(student);
-        return new ResponseEntity<>("Student " + student.getName() + " leaved group " + group.getGroupName(), HttpStatus.OK );
+        return "Student " + student.getName() + " leaved group " + group.getGroupName();
     }
 
-    @PostMapping("/deleteGroup/{stuId}/{groupId}")
-    ResponseEntity<String> deleteGroup(@PathVariable int stuId, @PathVariable int groupId){
+    @PostMapping("/group/deleteGroup/{stuId}/{groupId}")
+    String deleteGroup(@PathVariable int stuId, @PathVariable int groupId){
         Group group = groupServiceInterface.getGroupById(groupId);
-        if(stuId != group.getStudent().getId()) return new ResponseEntity<>("Unauthorized Student : trying to delete group", HttpStatus.OK);
+        if(stuId != group.getStudent().getId()) return "Unauthorized Student : trying to delete group";
         List<Student> studentList = group.getStudentList();
         for(Student student  : studentList){
             student.setGroup(null);
             studentServiceInterface.save(student);
         }
         groupServiceInterface.delete(groupId);
-        return new ResponseEntity<>("trying to delete Group", HttpStatus.OK);
+        return "trying to delete Group";
     }
 
-    @PostMapping("/assignFaculty/{facId}/{groupId}")
-    ResponseEntity<String> assignFaculty(@PathVariable int facId, @PathVariable int groupId){
+    @PostMapping("/group/assignFaculty/{facId}/{groupId}")
+    String assignFaculty(@PathVariable int facId, @PathVariable int groupId){
         Faculty faculty = facultyServiceInterface.getFacultyById(facId);
         Group group = groupServiceInterface.getGroupById(groupId);
         group.setFaculty(faculty);
         groupServiceInterface.save(group);
-        return new ResponseEntity<>("Faculty " + faculty.getName() + " Assigned to Group " + group.getGroupName(), HttpStatus.OK);
+        return "Faculty " + faculty.getName() + " Assigned to Group " + group.getGroupName();
     }
 
-    @PostMapping("/allocateProject/{groupId}/{proId}")
-    ResponseEntity<String> allocateProject(@PathVariable int groupId, @PathVariable int proId){
+    @PostMapping("/group/allocateProject/{groupId}/{proId}")
+    String allocateProject(@PathVariable int groupId, @PathVariable int proId){
         Group group = groupServiceInterface.getGroupById(groupId);
-        if(group == null) return new ResponseEntity<>("group does not exist", HttpStatus.OK);
+        if(group == null) return "group does not exist";
         Projects projects = projectsServiceInterface.getProjectById(proId);
         group.setProject(projects);
-        groupServiceInterface.save(group);
-        return new ResponseEntity<>("project " + projects.getName() + " allocated to " + group.getGroupName(), HttpStatus.OK);
+        return "project " + projects.getName() + " allocated to " + group.getGroupName();
     }
 
 
-    @PostMapping("/assignRank")
-    ResponseEntity<String> assignRank(){
+    @GetMapping("/group/assignRank")
+    void assignRank(){
         List<Group> groupList = groupServiceInterface.groupList();
         List<group> groups = new ArrayList<>();
         for(Group g : groupList){
@@ -129,7 +131,6 @@ public class GroupRESTController {
             groupToAssignRank.setRank(i);
             groupServiceInterface.save(groupToAssignRank);
         }
-        return new ResponseEntity<>("Rank assigned", HttpStatus.OK);
     }
 
 

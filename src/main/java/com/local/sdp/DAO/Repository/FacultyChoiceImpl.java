@@ -52,4 +52,11 @@ public class FacultyChoiceImpl implements FacultyChoiceDAO {
         TypedQuery<FacultyChoice> projectsTypedQuery = entityManager.createQuery("From FacultyChoice", FacultyChoice.class);
         return projectsTypedQuery.getResultList();
     }
+
+    @Override
+    @Transactional
+    public void delete(int id) {
+        FacultyChoice facultyChoice = entityManager.find(FacultyChoice.class, id);
+        entityManager.remove(facultyChoice);
+    }
 }

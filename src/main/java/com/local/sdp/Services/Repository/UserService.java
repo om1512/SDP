@@ -4,10 +4,6 @@ import com.local.sdp.DAO.Interface.UserDAO;
 import com.local.sdp.Entity.User;
 import com.local.sdp.Services.Interface.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +12,7 @@ import java.util.List;
 @Service
 public class UserService implements UserServiceInterface {
     private UserDAO userDAO;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
     public UserService() {
     }
 
@@ -28,7 +23,6 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public void save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAO.save(user);
     }
 
@@ -61,7 +55,6 @@ public class UserService implements UserServiceInterface {
     public void delete(int id) {
         userDAO.delete(id);
     }
-
 
 
 }

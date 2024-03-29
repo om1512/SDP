@@ -13,4 +13,7 @@ public interface ProjectChoiceServiceInterface {
 
     ProjectChoice getProjectChoiceByProjectId(int projectId);
     List<ProjectChoice> getAll();
+
+    ProjectChoice getProjectChoice(int projectId, int groupId);
+    void delete(ProjectChoice projectChoice);
 }

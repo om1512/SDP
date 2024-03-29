@@ -10,5 +10,4 @@ public interface FacultyServiceInterface {
     Faculty getFacultyById(int id);
     void deleteById(int id);
     Faculty getFacultyByUserId(int id);
-    Faculty getFacultyByEmail(String email);
 }

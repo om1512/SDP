@@ -44,5 +44,13 @@ public class ProjectChoiceService implements ProjectChoiceServiceInterface {
         return projectChoiceDAO.getAll();
     }
 
+    @Override
+    public ProjectChoice getProjectChoice(int projectId, int groupId) {
+        return projectChoiceDAO.getProjectChoice(projectId, groupId);
+    }
 
+    @Override
+    public void delete(ProjectChoice projectChoice) {
+        projectChoiceDAO.delete(projectChoice.getId());
+    }
 }

@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/projectChoice")
-@CrossOrigin(origins = "http://localhost:4200")
-
+@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class ProjectChoiceRESTController {
     @Autowired
     ProjectChoiceServiceInterface projectChoiceServiceInterface;
@@ -26,7 +25,7 @@ public class ProjectChoiceRESTController {
     @Autowired
     ProjectsServiceInterface projectsServiceInterface;
 
-    @PostMapping("/{groupId}/{studentId}/{projectId}")
+    @PostMapping("/projectChoice/{groupId}/{studentId}/{projectId}")
     String addProjectChoice(@PathVariable int groupId, @PathVariable int studentId, @PathVariable int projectId){
         Student student = studentServiceInterface.findById(studentId);
         if(student == null) return "student does not exist";
@@ -43,9 +42,9 @@ public class ProjectChoiceRESTController {
         return "project choice added";
     }
 
-    @PostMapping("/changePriority/{groupId}/{projectId}/{priority}")
+    @PostMapping("/projectChoice/changePriority/{groupId}/{projectId}/{priority}")
     String changePriority(@PathVariable int groupId,@PathVariable int projectId, @PathVariable int priority){
-        ProjectChoice projectChoice = projectChoiceServiceInterface.getProjectChoiceByProjectId(projectId);
+        ProjectChoice projectChoice = projectChoiceServiceInterface.getProjectChoice(projectId, groupId);
         if(projectChoice == null) return "project choice does not exist";
         List<ProjectChoice> getAllProjectChoice = projectChoiceServiceInterface.getAllProjectChoiceByGroup(groupId);
         for(ProjectChoice choice : getAllProjectChoice){
@@ -60,18 +59,34 @@ public class ProjectChoiceRESTController {
         return "priority changed";
     }
 
-    @GetMapping("/{groupId}")
+    @DeleteMapping("/projectChoice/delete/{projectId}/{groupId}")
+    String deleteChoice(@PathVariable int projectId, @PathVariable int groupId) {
+        ProjectChoice removedChoice = projectChoiceServiceInterface.getProjectChoice(projectId, groupId);
+        if (removedChoice == null) {
+            return "Project choice does not exists";
+        }
+        projectChoiceServiceInterface.delete(removedChoice);
+        List<ProjectChoice> allProjectChoices = projectChoiceServiceInterface.getAllProjectChoiceByGroup(groupId);
+        for (ProjectChoice choice : allProjectChoices) {
+            if (choice.getPriority() > removedChoice.getPriority()) {
+                choice.setPriority(choice.getPriority() - 1);
+                projectChoiceServiceInterface.save(choice);
+            }
+        }
+        return "project choice removed";
+    }
+
+    @GetMapping("/projectChoice/{groupId}")
     List<ProjectChoice> getAllChoiceOfGroup(@PathVariable int groupId){
         return projectChoiceServiceInterface.getAllProjectChoiceByGroup(groupId);
     }
 
 
-    @GetMapping("/assignProject")
+    @GetMapping("/projectChoice/assignProject")
     void assignProject(){
         List<Group> groups = groupServiceInterface.groupList();
         List<Group> sortedByRank = sortGroups(groups);
         Set<Integer> allocatedProject = new HashSet<>();
-
         for(Group group : sortedByRank){
             Map<Integer, Integer> projectMap = new HashMap<>();
             List<ProjectChoice> projectChoices = projectChoiceServiceInterface.getAllProjectChoiceByGroup(group.getId());
@@ -103,8 +118,6 @@ public class ProjectChoiceRESTController {
         for(int i:employeeByKey){
             ans.add(groupServiceInterface.getGroupById(map.get(i)));
         }
-
-
 
         return ans;
     }

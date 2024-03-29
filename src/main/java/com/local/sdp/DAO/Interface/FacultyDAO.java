@@ -9,7 +9,5 @@ public interface FacultyDAO {
     List<Faculty> getFaculties();
     Faculty getFacultyById(int id);
     Faculty getFacultyByUserId(int id);
-    Faculty getFacultyByEmail(String email);
-
     void deleteById(int id);
 }

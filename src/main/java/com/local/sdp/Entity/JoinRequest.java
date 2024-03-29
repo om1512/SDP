@@ -29,6 +29,16 @@ public class JoinRequest {
     @Column(name = "status")
     private JoinRequestStatus status;
 
+    @JoinColumn(name = "studentRequested")
+    private boolean studentRequested;
+
+    public boolean isStudentRequested() {
+        return studentRequested;
+    }
+
+    public void setStudentRequested(boolean studentRequested) {
+        this.studentRequested = studentRequested;
+    }
 
     public JoinRequest() {
     }
@@ -72,6 +82,7 @@ public class JoinRequest {
                 ", student=" + student +
                 ", group=" + group +
                 ", status=" + status +
+                ", sendByStudent=" + studentRequested +
                 '}';
     }
 

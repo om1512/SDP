@@ -4,11 +4,13 @@ import com.local.sdp.DAO.Interface.ProjectChoiceDAO;
 import com.local.sdp.Entity.ProjectChoice;
 import com.local.sdp.Entity.Projects;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 @Repository
@@ -52,5 +54,18 @@ public class ProjectChoiceImpl implements ProjectChoiceDAO {
         return projectsTypedQuery.getResultList();
     }
 
+    @Override
+    public ProjectChoice getProjectChoice(int projectId, int groupId) {
+        TypedQuery<ProjectChoice> projectChoiceTypedQuery = entityManager.createQuery("Select p from ProjectChoice as p where p.projects.id =: projectId AND p.group.id =: groupId", ProjectChoice.class);
+        projectChoiceTypedQuery.setParameter("projectId", projectId);
+        projectChoiceTypedQuery.setParameter("groupId", groupId);
+        return  projectChoiceTypedQuery.getSingleResult();
+    }
 
+    @Override
+    @Transactional
+    public void delete(int id) {
+        ProjectChoice projectChoice = entityManager.find(ProjectChoice.class, id);
+        entityManager.remove(projectChoice);
+    }
 }

@@ -1,6 +1,5 @@
 package com.local.sdp.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -18,7 +17,6 @@ public class Projects {
 
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "group_id")
-    @JsonIgnore
     private Group projectGroup;
 
     @Column(name = "is_custom")

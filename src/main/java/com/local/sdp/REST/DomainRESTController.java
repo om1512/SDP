@@ -5,7 +5,6 @@ import com.local.sdp.Entity.Faculty;
 import com.local.sdp.ExceptionHandlers.ExceptionResponse;
 import com.local.sdp.Services.Interface.DomainServiceInterface;
 import com.local.sdp.Services.Interface.FacultyServiceInterface;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +14,8 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/domain")
-@CrossOrigin(origins = "http://localhost:4200")
-
+@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class DomainRESTController {
     @Autowired
     DomainServiceInterface domainServiceInterface;
@@ -25,36 +23,34 @@ public class DomainRESTController {
     @Autowired
     FacultyServiceInterface facultyServiceInterface;
 
-    @PostMapping("")
-    ResponseEntity<String> save(@RequestBody Domain domain){
+    @PostMapping("/domain")
+    void save(@RequestBody Domain domain){
         domainServiceInterface.save(domain);
-        return new ResponseEntity<>("domain stored successfully", HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<Integer> delete(@PathVariable int id){
-        return new ResponseEntity<>(domainServiceInterface.delete(id), HttpStatus.OK);
+    @DeleteMapping("/domain/{id}")
+    int delete(@PathVariable int id){
+        return domainServiceInterface.delete(id);
     }
 
-    @GetMapping("")
-    ResponseEntity<List<Domain>> domainList(){
-        return new ResponseEntity<>(domainServiceInterface.getDomain(), HttpStatus.OK);
+    @GetMapping("/domain")
+    List<Domain> domainList(){
+        return domainServiceInterface.getDomain();
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity<Domain> domain(@PathVariable int id){
-        return new ResponseEntity<>(domainServiceInterface.getDomainById(id), HttpStatus.OK);
+    @GetMapping("/domain/{id}")
+    Domain domain(@PathVariable int id){
+        return domainServiceInterface.getDomainById(id);
     }
 
-    @PostMapping("/map/{facEmail}/{domainId}")
-    ResponseEntity<String> map(@PathVariable String facEmail, @PathVariable int domainId){
+    @PostMapping("/domain/map/{facId}/{domainId}")
+    void map(@PathVariable int facId, @PathVariable int domainId){
         Domain domain = domainServiceInterface.getDomainById(domainId);
-        Faculty faculty = facultyServiceInterface.getFacultyByEmail(facEmail);
+        Faculty faculty = facultyServiceInterface.getFacultyById(facId);
         Set<Faculty> faculties = domain.getFacultyDomainSet();
         faculties.add(faculty);
         domain.setFacultyDomainSet(faculties);
         domainServiceInterface.save(domain);
-        return new ResponseEntity<>("mapped successfully", HttpStatus.OK);
     }
 
     @ExceptionHandler

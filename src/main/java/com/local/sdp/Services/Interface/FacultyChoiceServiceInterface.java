@@ -12,5 +12,5 @@ public interface FacultyChoiceServiceInterface {
 
     List<FacultyChoice> getAll();
     FacultyChoice getFacultyChoiceById(int groupId, int facultyId);
-
+    void remove(FacultyChoice facultyChoice);
 }

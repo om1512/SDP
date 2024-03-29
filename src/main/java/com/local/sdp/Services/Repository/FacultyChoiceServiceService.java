@@ -42,4 +42,9 @@ public class FacultyChoiceServiceService implements FacultyChoiceServiceInterfac
     public FacultyChoice getFacultyChoiceById(int groupId, int facultyId) {
         return facultyChoiceDAO.getFacultyChoiceById(groupId, facultyId);
     }
+
+    @Override
+    public void remove(FacultyChoice facultyChoice) {
+        facultyChoiceDAO.delete(facultyChoice.getId());
+    }
 }

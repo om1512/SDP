@@ -63,4 +63,13 @@ public class JoinRequestImpl implements JoinRequestDAO {
         query.setParameter("studentId", studentId);
         return query.getSingleResult();
     }
+
+    @Override
+    public List<JoinRequest> allRequestOfGroupStudentRequested(int groupId) {
+        TypedQuery<JoinRequest> query = entityManager.createQuery(
+                "SELECT jr FROM JoinRequest jr WHERE jr.group.id = :groupId AND jr.studentRequested = true AND jr.status = :status", JoinRequest.class);
+        query.setParameter("groupId", groupId);
+        query.setParameter("status", JoinRequest.JoinRequestStatus.PENDING);
+        return query.getResultList();
+    }
 }

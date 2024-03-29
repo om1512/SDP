@@ -45,9 +45,4 @@ public class FacultyService implements FacultyServiceInterface {
     public Faculty getFacultyByUserId(int id) {
         return facultyDAO.getFacultyByUserId(id);
     }
-
-    @Override
-    public Faculty getFacultyByEmail(String email) {
-        return facultyDAO.getFacultyByEmail(email);
-    }
 }

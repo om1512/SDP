@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:4200")
-
+@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class UserRESTController {
     UserServiceInterface userService;
 
@@ -23,39 +22,39 @@ public class UserRESTController {
         this.userService = userService;
     }
 
-    @GetMapping("")
+    @GetMapping("/users")
     public List<User> findAll() {
         return userService.findAll();
     }
 
-    @GetMapping("/id/{userId}")
+    @GetMapping("/users/id/{userId}")
     public User findById(@PathVariable int userId) {
         return userService.findById(userId);
     }
 
-    @GetMapping("/email/{userEmail}")
+    @GetMapping("/users/email/{userEmail}")
     public User findByEmail(@PathVariable String userEmail) {
         return userService.findByEmail(userEmail);
     }
 
-    @GetMapping("/type/{userType}")
+    @GetMapping("/users/type/{userType}")
     public List<User> findByType(@PathVariable String userType) {
         return userService.findByType(userType);
     }
 
-    @PostMapping("")
+    @PostMapping("/users")
     public String save(@RequestBody User user) {
         userService.save(user);
         return "Saved";
     }
 
-    @PutMapping("")
+    @PutMapping("/users")
     public String update(@RequestBody User user) {
         userService.save(user);
         return "Updated";
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/users/{userId}")
     public String delete(@PathVariable int userId) {
         User user = userService.findById(userId);
         userService.delete(userId);

@@ -50,4 +50,9 @@ public class JoinRequestService implements JoinRequestServiceInterface {
     public JoinRequest getRequestByGroupIdStudentId(int groupId, int studentId) {
         return joinRequestDAO.getRequestByGroupIdStudentId(groupId, studentId);
     }
+
+    @Override
+    public List<JoinRequest> allRequestOfGroupStudentRequested(int groupId) {
+        return joinRequestDAO.allRequestOfGroupStudentRequested(groupId);
+    }
 }

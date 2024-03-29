@@ -15,4 +15,5 @@ public interface JoinRequestServiceInterface {
 
     JoinRequest getRequestByGroupIdStudentId(int groupId, int studentId);
 
+    List<JoinRequest> allRequestOfGroupStudentRequested(int groupId);
 }

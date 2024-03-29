@@ -15,4 +15,6 @@ public interface ProjectChoiceDAO {
 
     List<ProjectChoice> getAll();
 
+    ProjectChoice getProjectChoice(int projectId, int groupId);
+    void delete(int id);
 }
