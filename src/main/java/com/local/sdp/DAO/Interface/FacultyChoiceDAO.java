@@ -8,9 +8,8 @@ import java.util.List;
 public interface FacultyChoiceDAO {
     void save(FacultyChoice facultyChoice);
     List<FacultyChoice> getAllFacultyChoiceByGroup(int groupId);
-
     FacultyChoice getFacultyChoiceById(int id);
     FacultyChoice getFacultyChoiceById(int groupId, int facultyId);
-
     List<FacultyChoice> getAll();
+    void delete(int id);
 }

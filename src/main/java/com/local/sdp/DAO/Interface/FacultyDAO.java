@@ -10,6 +10,5 @@ public interface FacultyDAO {
     Faculty getFacultyById(int id);
     Faculty getFacultyByUserId(int id);
     Faculty getFacultyByEmail(String email);
-
     void deleteById(int id);
 }

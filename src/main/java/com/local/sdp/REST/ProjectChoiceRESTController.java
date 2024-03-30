@@ -65,7 +65,6 @@ public class ProjectChoiceRESTController {
         return projectChoiceServiceInterface.getAllProjectChoiceByGroup(groupId);
     }
 
-
     @GetMapping("/assignProject")
     void assignProject(){
         List<Group> groups = groupServiceInterface.groupList();
@@ -103,9 +102,6 @@ public class ProjectChoiceRESTController {
         for(int i:employeeByKey){
             ans.add(groupServiceInterface.getGroupById(map.get(i)));
         }
-
-
-
         return ans;
     }
 }

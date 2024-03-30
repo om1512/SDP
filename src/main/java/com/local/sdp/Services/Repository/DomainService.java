@@ -11,7 +11,6 @@ import java.util.List;
 
 @Service
 public class DomainService implements DomainServiceInterface {
-
     DomainDAO domainDAO;
     @Autowired
     DomainService(DomainDAO domainDAO){
@@ -21,17 +20,14 @@ public class DomainService implements DomainServiceInterface {
     public void save(Domain domain) {
         domainDAO.save(domain);
     }
-
     @Override
     public int delete(int id) {
         return domainDAO.delete(id);
     }
-
     @Override
     public List<Domain> getDomain() {
         return domainDAO.getDomain();
     }
-
     @Override
     public Domain getDomainById(int id) {
         return domainDAO.getDomainById(id);

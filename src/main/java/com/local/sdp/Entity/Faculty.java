@@ -2,13 +2,10 @@ package com.local.sdp.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-
 
 @Getter
 @Setter
@@ -18,7 +15,6 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "faculty")
-
 public class Faculty {
 
     @Id
@@ -54,8 +50,4 @@ public class Faculty {
 
     @OneToMany(mappedBy = "faculty", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Group> groupList  = new ArrayList<>();
-
-
-
-
 }

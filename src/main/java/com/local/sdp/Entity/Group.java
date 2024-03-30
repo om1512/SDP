@@ -2,13 +2,13 @@ package com.local.sdp.Entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.mapping.Join;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Getter
 @Setter
@@ -27,6 +27,7 @@ public class Group {
     @Column(name = "group_name")
     private String groupName;
 
+    @JsonIgnoreProperties({"group"})
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id", name = "creator_id")
     private Student student;
@@ -37,6 +38,7 @@ public class Group {
     @Column(name = "group_rank")
     private int rank;
 
+    @JsonIgnoreProperties({"group"})
     @OneToMany(mappedBy = "group", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Student> studentList = new ArrayList<>();
 
@@ -60,5 +62,4 @@ public class Group {
 
     @OneToMany(mappedBy = "group", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Task> tasks = new ArrayList<>();
-
 }

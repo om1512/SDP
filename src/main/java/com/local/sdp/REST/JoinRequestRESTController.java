@@ -62,6 +62,27 @@ public class JoinRequestRESTController {
         return new ResponseEntity<>(joinRequestServiceInterface.allRequestOfGroup(groupId), HttpStatus.OK);
     }
 
+    @GetMapping("/group/studentRequested/{groupId}")
+    List<JoinRequest> getAllRequestsByStudentRequested(@PathVariable int groupId) {
+        return joinRequestServiceInterface.allRequestOfGroupStudentRequested(groupId);
+    }
+
+    @PostMapping("/send/{studentId}/{groupId}")
+    String sendRequestByStudent(@PathVariable int studentId, @PathVariable int groupId){
+        JoinRequest joinRequest = new JoinRequest();
+        joinRequest.setStatus(JoinRequest.JoinRequestStatus.PENDING);
+        Student student = studentServiceInterface.findById(studentId);
+        Group group = groupServiceInterface.getGroupById(groupId);
+        if(student == null) return "Student does not exist";
+        else joinRequest.setStudent(student);
+        if(group == null) return "Group does not exist";
+        else if(group.getStudentList().size() == 3) return "Group is full";
+        else joinRequest.setGroup(group);
+        joinRequest.setStudentRequested(true);
+        joinRequestServiceInterface.save(joinRequest);
+        return "Request Send By " + student.getName() + " to group " + group.getGroupName();
+    }
+
     @PostMapping("/{creatorId}/approve/{groupId}/{stuId}")
     ResponseEntity<String> approveRequest(@PathVariable int creatorId, @PathVariable int groupId, @PathVariable int stuId){
         Student student =studentServiceInterface.findById(stuId);
@@ -87,6 +108,4 @@ public class JoinRequestRESTController {
         joinRequestServiceInterface.save(joinRequest);
         return new ResponseEntity<>("request rejected", HttpStatus.OK);
     }
-
-
 }

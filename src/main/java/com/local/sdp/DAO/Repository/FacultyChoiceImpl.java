@@ -14,13 +14,10 @@ import java.util.List;
 
 @Repository
 public class FacultyChoiceImpl implements FacultyChoiceDAO {
-
     EntityManager entityManager;
     FacultyChoiceImpl(EntityManager entityManager){
         this.entityManager = entityManager;
     }
-
-
     @Override
     @Transactional
     public void save(FacultyChoice facultyChoice) {
@@ -33,12 +30,10 @@ public class FacultyChoiceImpl implements FacultyChoiceDAO {
         projectsTypedQuery.setParameter("groupId", groupId);
         return projectsTypedQuery.getResultList();
     }
-
     @Override
     public FacultyChoice getFacultyChoiceById(int id) {
         return entityManager.find(FacultyChoice.class, id);
     }
-
     @Override
     public FacultyChoice getFacultyChoiceById(int groupId, int facultyId) {
         TypedQuery<FacultyChoice> projectsTypedQuery = entityManager.createQuery("Select f from FacultyChoice as f where f.group.id =: groupId and f.faculty.id =: facultyId", FacultyChoice.class);
@@ -46,10 +41,15 @@ public class FacultyChoiceImpl implements FacultyChoiceDAO {
         projectsTypedQuery.setParameter("facultyId", facultyId);
         return projectsTypedQuery.getSingleResult();
     }
-
     @Override
     public List<FacultyChoice> getAll() {
         TypedQuery<FacultyChoice> projectsTypedQuery = entityManager.createQuery("From FacultyChoice", FacultyChoice.class);
         return projectsTypedQuery.getResultList();
+    }
+    @Override
+    @Transactional
+    public void delete(int id) {
+        FacultyChoice facultyChoice = entityManager.find(FacultyChoice.class, id);
+        entityManager.remove(facultyChoice);
     }
 }
