@@ -19,7 +19,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/facultyChoice")
 @CrossOrigin(origins = "http://localhost:4200")
-
 public class FacultyChoiceController {
     @Autowired
     FacultyChoiceServiceInterface facultyChoiceInterface;
@@ -41,7 +40,6 @@ public class FacultyChoiceController {
         facultyChoiceInterface.save(facultyChoice);
         return new ResponseEntity<>("Choice Filled Success", HttpStatus.OK);
     }
-
 
     @PostMapping("/changePriority/{groupId}/{facultyId}/{priority}")
     ResponseEntity<String> changePriority(@PathVariable int groupId, @PathVariable int facultyId, @PathVariable int priority){

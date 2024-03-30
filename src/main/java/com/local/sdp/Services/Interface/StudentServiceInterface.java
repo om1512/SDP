@@ -10,5 +10,4 @@ public interface StudentServiceInterface {
     Student findById(int id);
     void deleteById(int id);
     Student findByUserId(int id);
-
 }

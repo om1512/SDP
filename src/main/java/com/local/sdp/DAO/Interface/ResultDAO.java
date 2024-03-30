@@ -8,8 +8,6 @@ import java.util.List;
 public interface ResultDAO {
     void save(Result result);
     int delete(int id);
-
     List<Result> getResult();
-
     Result getResultById(int id);
 }

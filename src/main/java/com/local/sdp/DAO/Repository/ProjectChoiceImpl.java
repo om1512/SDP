@@ -13,7 +13,6 @@ import java.util.List;
 
 @Repository
 public class ProjectChoiceImpl implements ProjectChoiceDAO {
-
     EntityManager entityManager;
     @Autowired
     ProjectChoiceImpl(EntityManager entityManager){
@@ -52,5 +51,18 @@ public class ProjectChoiceImpl implements ProjectChoiceDAO {
         return projectsTypedQuery.getResultList();
     }
 
+    @Override
+    public ProjectChoice getProjectChoice(int projectId, int groupId) {
+        TypedQuery<ProjectChoice> projectChoiceTypedQuery = entityManager.createQuery("Select p from ProjectChoice as p where p.projects.id =: projectId AND p.group.id =: groupId", ProjectChoice.class);
+        projectChoiceTypedQuery.setParameter("projectId", projectId);
+        projectChoiceTypedQuery.setParameter("groupId", groupId);
+        return  projectChoiceTypedQuery.getSingleResult();
+    }
 
+    @Override
+    @Transactional
+    public void delete(int id) {
+        ProjectChoice projectChoice = entityManager.find(ProjectChoice.class, id);
+        entityManager.remove(projectChoice);
+    }
 }

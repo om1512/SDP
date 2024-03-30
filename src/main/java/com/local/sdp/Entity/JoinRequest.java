@@ -5,13 +5,11 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "join_request")
 public class JoinRequest {
-
     public enum JoinRequestStatus {
         PENDING,
         ACCEPTED,
         REJECTED
     }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -29,6 +27,8 @@ public class JoinRequest {
     @Column(name = "status")
     private JoinRequestStatus status;
 
+    @JoinColumn(name = "studentRequested")
+    private boolean studentRequested;
 
     public JoinRequest() {
     }
@@ -63,6 +63,14 @@ public class JoinRequest {
 
     public void setStatus(JoinRequestStatus status) {
         this.status = status;
+    }
+
+    public boolean isStudentRequested() {
+        return studentRequested;
+    }
+
+    public void setStudentRequested(boolean studentRequested) {
+        this.studentRequested = studentRequested;
     }
 
     @Override

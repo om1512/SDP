@@ -10,9 +10,7 @@ public interface JoinRequestServiceInterface {
     List<JoinRequest> getRequest();
     JoinRequest getRequestById(int id);
     List<JoinRequest> allRequestOfStudent(int studentId);
-
     List<JoinRequest> allRequestOfGroup(int groupId);
-
     JoinRequest getRequestByGroupIdStudentId(int groupId, int studentId);
-
+    List<JoinRequest> allRequestOfGroupStudentRequested(int groupId);
 }
