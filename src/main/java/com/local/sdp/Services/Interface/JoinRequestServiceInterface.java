@@ -13,4 +13,7 @@ public interface JoinRequestServiceInterface {
     List<JoinRequest> allRequestOfGroup(int groupId);
     JoinRequest getRequestByGroupIdStudentId(int groupId, int studentId);
     List<JoinRequest> allRequestOfGroupStudentRequested(int groupId);
+    void deleteByStudentIdAndGroupId(int studentId, int groupId);
+
+
 }

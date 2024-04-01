@@ -33,7 +33,6 @@ public class Student {
     @OneToMany(mappedBy = "student", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Result> resultList = new ArrayList<>();
 
-    @JsonIgnore
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name="project_group_id")
     private Group group;
