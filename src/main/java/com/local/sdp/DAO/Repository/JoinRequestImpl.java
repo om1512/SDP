@@ -71,4 +71,14 @@ public class JoinRequestImpl implements JoinRequestDAO {
         query.setParameter("status", JoinRequest.JoinRequestStatus.PENDING);
         return query.getResultList();
     }
+
+    @Transactional
+    @Override
+    public void deleteByStudentIdAndGroupId(int studentId, int groupId) {
+        entityManager.createQuery("DELETE FROM JoinRequest j WHERE j.student.id = :studentId AND j.group.id = :groupId")
+                .setParameter("studentId", studentId)
+                .setParameter("groupId", groupId)
+                .executeUpdate();
+
+    }
 }

@@ -58,14 +58,27 @@ public class FacultyChoiceController {
         return new ResponseEntity<>("Priority changed successfully", HttpStatus.OK);
     }
 
+    @DeleteMapping("/{groupId}/{facultyId}")
+    void removeChoice(@PathVariable int groupId, @PathVariable int facultyId){
+        FacultyChoice facultyChoice = facultyChoiceInterface.getFacultyChoiceById(groupId, facultyId);
+        facultyChoiceInterface.remove(facultyChoice);
+        List<FacultyChoice> allProjectChoices = facultyChoiceInterface.getAllFacultyChoiceByGroup(groupId);
+        for (FacultyChoice choice : allProjectChoices) {
+            if (choice.getPriority() > facultyChoice.getPriority()) {
+                choice.setPriority(choice.getPriority() - 1);
+                facultyChoiceInterface.save(choice);
+            }
+        }
+    }
+
     @GetMapping("")
     ResponseEntity<List<FacultyChoice>> getAllFaculties(){
         return new ResponseEntity<>(facultyChoiceInterface.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<FacultyChoice> getById(@PathVariable int id){
-        return new ResponseEntity<>(facultyChoiceInterface.getFacultyChoiceById(id), HttpStatus.OK);
+    ResponseEntity<List<FacultyChoice>> getById(@PathVariable int id){
+        return new ResponseEntity<>(facultyChoiceInterface.getAllFacultyChoiceByGroup(id), HttpStatus.OK);
     }
 
 

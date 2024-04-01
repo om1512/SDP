@@ -6,10 +6,7 @@ import com.local.sdp.Entity.Group;
 import com.local.sdp.Entity.Projects;
 import com.local.sdp.Entity.Student;
 import com.local.sdp.ExceptionHandlers.ExceptionResponse;
-import com.local.sdp.Services.Interface.FacultyServiceInterface;
-import com.local.sdp.Services.Interface.GroupServiceInterface;
-import com.local.sdp.Services.Interface.ProjectsServiceInterface;
-import com.local.sdp.Services.Interface.StudentServiceInterface;
+import com.local.sdp.Services.Interface.*;
 import com.local.sdp.Utils.group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +32,9 @@ public class GroupRESTController {
 
     @Autowired
     ProjectsServiceInterface projectsServiceInterface;
+
+    @Autowired
+    JoinRequestServiceInterface joinRequestServiceInterface;
 
     @PostMapping("/createGroup/{stuId}")
     ResponseEntity<String> createGroup(@RequestBody Group group, @PathVariable int stuId){
@@ -80,6 +80,7 @@ public class GroupRESTController {
         Student student = studentServiceInterface.findById(stuId);
         student.setGroup(null);
         studentServiceInterface.save(student);
+        joinRequestServiceInterface.deleteByStudentIdAndGroupId(stuId, groupId);
         return new ResponseEntity<>("Student " + student.getName() + " leaved group " + group.getGroupName(), HttpStatus.OK );
     }
 

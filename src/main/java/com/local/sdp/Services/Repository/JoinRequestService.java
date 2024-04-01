@@ -47,4 +47,9 @@ public class JoinRequestService implements JoinRequestServiceInterface {
     public List<JoinRequest> allRequestOfGroupStudentRequested(int groupId) {
         return joinRequestDAO.allRequestOfGroupStudentRequested(groupId);
     }
+
+    @Override
+    public void deleteByStudentIdAndGroupId(int studentId, int groupId) {
+        joinRequestDAO.deleteByStudentIdAndGroupId(studentId, groupId);
+    }
 }
